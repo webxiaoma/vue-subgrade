@@ -1,4 +1,4 @@
-import './test.css'
+import './index.less'
 
 let fun  = ()=>{
     let a = {

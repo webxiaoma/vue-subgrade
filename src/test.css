@@ -3,3 +3,9 @@ div{
     height:200px;
     background:red;
 }
+
+.test{
+    width:400px;
+    height:400px;
+    background: url('./assets/img/manong.jpg') no-repeat;
+}
