@@ -7,6 +7,7 @@ module.exports = {
         host: 'localhost',
         port: 9000,
         openBrowser: true, 
+        cssModule:false, // vue css module形式
     },
     build:{  // production
        assetsRoot:'./dist',  // 打包目录

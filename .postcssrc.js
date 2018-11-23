@@ -8,7 +8,7 @@ module.exports = {
       // 也可以在package.json中的browserslist字段中添加浏览器版本
         "browsers": [
           "defaults",
-          "not ie < 11",
+          "not ie <= 8",
           "last 20 versions",
           "> 1%",
           "iOS 7",

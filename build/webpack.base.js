@@ -2,17 +2,21 @@ const path = require('path');
 const config = require('../config')
 const utils = require('./utils')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { WebPlugin, AutoWebPlugin } = require('web-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
+
 
 const isProduction = process.env.NODE_ENV === 'production'?true:false
 
 module.exports = {
     context: path.resolve(__dirname,'../'),
     entry:{
-       'index':'./src/index.js'
+        'polyfill':'babel-polyfill',
+        'index':'./src/index.js'
     },
     output: {
-        filename: 'js/main-[hash:8].js',
+        filename: 'js/[name]-[hash:8].js',
         path:path.resolve(__dirname,'../',config.build.assetsRoot),
         path: path.resolve(__dirname,'../','dist'),
         publicPath:isProduction
@@ -21,26 +25,26 @@ module.exports = {
     },
     resolve: {
         alias:{
-
+            'vue$': 'vue/dist/vue.esm.js',
+            '@':  path.join(__dirname,'../src'),
         },
         modules:[path.resolve(__dirname,'../node_modules')],
-        extensions:[".js", ".json"]
+        extensions:[".js",".vue",".json"]
     },
     module: {
         rules: [
+            ...utils.cssLoader(MiniCssExtractPlugin.loader,{
+                css:{module:config.dev.cssModule}
+            }),
             {
                test: /\.js$/,
-               use: ['babel-loader'],
-               include:path.resolve(__dirname,'../src')
+               loader: 'babel-loader',
+               exclude: /node_modules/
             },
             {
-                test: /\.less/,
-                use: [
-                    isProduction?MiniCssExtractPlugin.loader:'style-loader',
-                    'css-loader',
-                    'postcss-loader',
-                    'less-loader'
-                ]
+                test: /\.vue$/,
+                loader: 'vue-loader',
+                include:path.resolve(__dirname,'../src')
             },
             {
                 test: /\.(png|jpe?g|gif|svg)$/,
@@ -51,7 +55,6 @@ module.exports = {
                         limit:10000,
                     }
                 },
-                include:path.resolve(__dirname,'../src')
             },
             {
                 test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
@@ -62,7 +65,6 @@ module.exports = {
                         limit: 10000
                     }
                 },
-                include:path.resolve(__dirname,'../src')
             },
             {
                 test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
@@ -73,7 +75,6 @@ module.exports = {
                         limit: 10000
                     }
                 },
-                include:path.resolve(__dirname,'../src')
             }
         ]
     },
@@ -81,6 +82,7 @@ module.exports = {
         new HtmlWebpackPlugin({
            inject: true, 
            template:  path.resolve(__dirname, '../index.html') 
-       }),
+        }),
+       new VueLoaderPlugin()
     ]
 }

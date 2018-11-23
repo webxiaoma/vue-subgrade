@@ -10,7 +10,14 @@ const webpackBaseConfig = require("./webpack.base.js") // 合并webpack配置
 
 module.exports = wepackMerge(webpackBaseConfig,{
     mode: 'production',  //production
-    devtool:'source-map',
+    // devtool:'source-map',
+    optimization:{
+        splitChunks:{
+            chunks:'all', 
+            name:'vue'
+            // minSize:100,  //打包10字节以上的模块 默认30000
+        }
+    },
     plugins: [
         new CleanWebpackPlugin([path.resolve(__dirname,'../',buildConfig.assetsRoot)],{
             root: path.resolve(__dirname,'../'),

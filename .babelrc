@@ -1,8 +1,26 @@
 {
     "presets": [
-        "env"
+      [
+        "env",
+        {
+          "targets":{
+              "browsers": ["last 8 versions", "ie >= 9"] 
+          }
+        }
+      ],
+        
+        "stage-2"
+       
     ],
     "plugins":[
-        "transform-runtime"
+        "transform-runtime",
+        "transform-vue-jsx",
+        [
+          "component",
+          {
+            "libraryName": "element-ui",
+            "styleLibraryName": "theme-chalk"
+          }
+        ]
     ]
 }
